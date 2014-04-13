@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
+   <extension
+         point="org.eclipse.ui.views">
+         <category
+               id="org.eclipse.cdt.astview"
+               name="AST Tools" />
+         <view name="AST View"
+                icon="icons/sample.gif" category="org.eclipse.cdt.astview" class="org.eclipse.cdt.astview.ASTView"
+                id="org.eclipse.cdt.astview.ASTView" />
+
+   </extension>
    
 </plugin>
