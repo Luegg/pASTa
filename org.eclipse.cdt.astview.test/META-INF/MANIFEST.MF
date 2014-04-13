@@ -1,0 +1,20 @@
+Bundle-ActivationPolicy: lazy
+Bundle-Name: Macronator Unit Tests
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources;bundle-version="3.7.100",
+ org.junit;bundle-version="4.11.0",
+ org.eclipse.jface.text;bundle-version="3.7.0",
+ org.eclipse.ui.ide;bundle-version="3.7.0",
+ org.eclipse.cdt.astview.plugin;bundle-version="1.0.0",
+ org.eclipse.ui.workbench,
+ org.hamcrest.core,
+ org.eclipse.cdt.core.tests;bundle-version="5.4.0",
+ org.eclipse.cdt.ui.tests;bundle-version="5.4.0",
+ ch.hsr.ifs.cdttesting;bundle-version="3.2.0"
+Bundle-Version: 1.0.0.qualifier
+Bundle-ManifestVersion: 2
+Bundle-Activator: org.eclipse.cdt.astview.test.TestActivator
+Bundle-SymbolicName: org.eclipse.cdt.astview.test;singleton:=true
+
