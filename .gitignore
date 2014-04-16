@@ -1,0 +1,4 @@
+*/.gitignore
+*/.classpath
+*/.settings/*
+*/.DS_Store
