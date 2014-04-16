@@ -7,7 +7,7 @@ Require-Bundle: org.eclipse.ui,
  org.junit;bundle-version="4.11.0",
  org.eclipse.jface.text;bundle-version="3.7.0",
  org.eclipse.ui.ide;bundle-version="3.7.0",
- org.eclipse.cdt.astview.plugin;bundle-version="1.0.0",
+ org.eclipse.cdt.pasta.plugin;bundle-version="1.0.0",
  org.eclipse.ui.workbench,
  org.hamcrest.core,
  org.eclipse.cdt.core.tests;bundle-version="5.4.0",
@@ -16,5 +16,5 @@ Require-Bundle: org.eclipse.ui,
 Bundle-Version: 1.0.0.qualifier
 Bundle-ManifestVersion: 2
 Bundle-Activator: org.eclipse.cdt.astview.test.TestActivator
-Bundle-SymbolicName: org.eclipse.cdt.astview.test;singleton:=true
+Bundle-SymbolicName: org.eclipse.cdt.pasta.test;singleton:=true
 

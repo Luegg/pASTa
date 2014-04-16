@@ -4,12 +4,12 @@
   <version>1.0.0-SNAPSHOT</version>
 
   <parent>
-    <relativePath>../org.eclipse.cdt.astview.parent/pom.xml</relativePath>
-    <groupId>org.eclipse.cdt.astview</groupId>
+    <relativePath>../org.eclipse.cdt.pasta.parent/pom.xml</relativePath>
+    <groupId>org.eclipse.cdt.pasta</groupId>
     <artifactId>parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>org.eclipse.cdt.astview.test</artifactId>
+  <artifactId>org.eclipse.cdt.pasta.test</artifactId>
   <packaging>eclipse-test-plugin</packaging>
 </project> 

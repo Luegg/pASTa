@@ -1,4 +1,4 @@
-package org.eclipse.cdt.astview.plugin;
+package org.eclipse.cdt.pasta.plugin;
 
 import org.eclipse.cdt.core.CCorePlugin;
 import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;

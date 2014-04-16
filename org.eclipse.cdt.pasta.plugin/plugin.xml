@@ -7,7 +7,7 @@
                id="org.eclipse.cdt.astview"
                name="AST Tools" />
          <view name="AST View"
-                icon="icons/sample.gif" category="org.eclipse.cdt.astview" class="org.eclipse.cdt.astview.plugin.ASTView"
+                icon="icons/sample.gif" category="org.eclipse.cdt.astview" class="org.eclipse.cdt.pasta.plugin.ASTView"
                 id="org.eclipse.cdt.astview.ASTView" />
 
    </extension>
