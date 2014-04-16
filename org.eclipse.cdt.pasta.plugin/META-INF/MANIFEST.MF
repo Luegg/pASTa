@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: AST View
+Bundle-Name: Painless AST Analysis
 Bundle-SymbolicName: org.eclipse.cdt.pasta.plugin;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Require-Bundle: org.eclipse.ui,
@@ -17,11 +17,13 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.cdt.core;bundle-version="5.6.0",
  org.eclipse.ui.workbench,
  org.eclipse.swt,
- org.eclipse.jface
+ org.eclipse.jface,
+ org.eclipse.osgi,
+ org.eclipse.osgi.services;bundle-version="3.3.100"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: 
  org.eclipse.cdt.pasta.plugin
-Bundle-Activator: org.eclipse.cdt.pasta.plugin.ASTViewPlugin
+Bundle-Activator: org.eclipse.cdt.pasta.plugin.PastaPlugin
 Bundle-ClassPath: lib/ch.jbaum.lib-0.0.1-SNAPSHOT.jar,
  .

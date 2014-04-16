@@ -5,13 +5,13 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-public class ASTViewPlugin extends AbstractUIPlugin {
+public class PastaPlugin extends AbstractUIPlugin {
 
     // The plug-in ID
     public static final String PLUGIN_ID = "org.eclipse.cdt.astview.plugin"; //$NON-NLS-1$
    
     // The shared instance
-    private static ASTViewPlugin plugin;
+    private static PastaPlugin plugin;
 
     /*
      * (non-Javadoc)
@@ -44,7 +44,7 @@ public class ASTViewPlugin extends AbstractUIPlugin {
      * 
      * @return the shared instance
      */
-    public static ASTViewPlugin getDefault() {
+    public static PastaPlugin getDefault() {
         return plugin;
     }
 

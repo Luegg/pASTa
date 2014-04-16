@@ -1,5 +1,5 @@
 Bundle-ActivationPolicy: lazy
-Bundle-Name: Macronator Unit Tests
+Bundle-Name: PASTA Unit Tests
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,

@@ -13,6 +13,7 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
@@ -21,15 +22,16 @@ import org.eclipse.swt.widgets.Control;
 import ch.jbaum.lib.Node;
 import ch.jbaum.lib.NodeVisitor;
 
-public class TreeView extends ScrolledComposite {
+public class ASTWidget extends ScrolledComposite {
 
     private Canvas canvas;
     private Node<Button> root;
     private int treeHeight;
     private int treeWidth;
     private final int NODE_HEIGHT = 20;
+    private NodeSelectionListener listener;
 
-    public TreeView(Composite parent) {
+    public ASTWidget(Composite parent) {
         super(parent, SWT.V_SCROLL | SWT.H_SCROLL | SWT.MULTI);
         init();
     }
@@ -46,8 +48,8 @@ public class TreeView extends ScrolledComposite {
 
             @Override
             public void paintControl(final PaintEvent e) {
-                TreeView.this.setMinWidth(treeWidth);
-                TreeView.this.setMinHeight(treeHeight);
+                ASTWidget.this.setMinWidth(treeWidth);
+                ASTWidget.this.setMinHeight(treeHeight);
                 if (root != null) {
                     root.visit(new NodeVisitor<Button>() {
                         @Override
@@ -73,6 +75,10 @@ public class TreeView extends ScrolledComposite {
         canvas.redraw();
         canvas.update();
     }
+    
+    public void setListener(NodeSelectionListener listener) {
+        this.listener = listener;
+    }
 
     private void clear() {
         for (Control child : canvas.getChildren()) {
@@ -82,11 +88,29 @@ public class TreeView extends ScrolledComposite {
 
     private void drawLineToParent(PaintEvent e, Node<?> node) {
         int parentX = (int) (getXCoord(node.parent()) + ((node.parent().width()) / 2));
-        int parentY = getYCoord(node.parent()) + (NODE_HEIGHT / 2);
+        int parentY = getYCoord(node.parent()) + NODE_HEIGHT;
         int nodeX = (int) (getXCoord(node) + ((node.width()) / 2));
-        int nodeY = getYCoord(node) + (NODE_HEIGHT / 2);
+        int nodeY = getYCoord(node);
         e.gc.drawLine(nodeX, nodeY, parentX, parentY);
+        drawArrowHead(e.gc, nodeX, nodeY, parentX, parentY);
     }
+    
+    private void drawArrowHead(GC gc, double tipX, double tipY, double tailX, double tailY)  
+    {  
+        double phi = Math.toRadians(20);  
+        int barb = 10;  
+        double dy = tipY - tailY;  
+        double dx = tipX - tailX;  
+        double theta = Math.atan2(dy, dx);   
+        double x, y, rho = theta + phi;  
+        for(int j = 0; j < 2; j++)  
+        {  
+            x = tipX - barb * Math.cos(rho);  
+            y = tipY - barb * Math.sin(rho);  
+            gc.drawLine((int)tipX, (int)tipY,(int) x,(int) y);  
+            rho = theta - phi;  
+        }  
+    }  
 
     private void updateNodePositions(final Node<Button> node) {
         if (node.parent() != null && !node.parent().data().isVisible()) {
@@ -116,6 +140,16 @@ public class TreeView extends ScrolledComposite {
             @Override
             public void mouseMove(MouseEvent e) {
                 CUIPlugin.getActivePage().getActiveEditor().getEditorSite().getSelectionProvider().setSelection(new TextSelection(astNode.getFileLocation().getNodeOffset(), astNode.getFileLocation().getNodeLength()));
+            }
+        });
+        
+        button.addMouseListener(new MouseAdapter() {
+            
+            @Override
+            public void mouseDown(MouseEvent e) {
+                if (listener != null) {
+                    listener.nodeSelected(astNode);
+                }
             }
         });
         for (IASTNode child : astNode.getChildren()) {
@@ -149,6 +183,7 @@ public class TreeView extends ScrolledComposite {
         node.data().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseDown(MouseEvent e) {
+                
                 node.treatAsLeaf(!node.isTreatedAsLeaf());
                 for (Node<Button> child : node.getChildren()) {
                     if (!node.isTreatedAsLeaf()) {

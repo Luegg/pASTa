@@ -4,11 +4,21 @@
    <extension
          point="org.eclipse.ui.views">
          <category
-               id="org.eclipse.cdt.astview"
-               name="AST Tools" />
-         <view name="AST View"
-                icon="icons/sample.gif" category="org.eclipse.cdt.astview" class="org.eclipse.cdt.pasta.plugin.ASTView"
-                id="org.eclipse.cdt.astview.ASTView" />
+               id="org.eclipse.cdt.pasta"
+               name="Painless AST Analysis" />
+         <view 
+         		icon="icons/sample.gif" 
+                category="org.eclipse.cdt.pasta" 
+                class="org.eclipse.cdt.pasta.plugin.ASTView"
+                id="org.eclipse.cdt.pasta.astview" 
+                name="AST View"/>
+         <view
+               category="org.eclipse.cdt.pasta"
+               class="org.eclipse.cdt.pasta.plugin.NodeView"
+               icon="icons/sample.gif"
+               id="org.eclipse.cdt.pasta.nodeview"
+               name="Node View" />
+         
 
    </extension>
    
