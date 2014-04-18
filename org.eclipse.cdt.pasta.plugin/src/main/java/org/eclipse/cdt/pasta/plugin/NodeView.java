@@ -22,22 +22,24 @@ public class NodeView extends ViewPart {
 
             @Override
             public void handleEvent(Event event) {
-                IASTNode astNode = (IASTNode) event.getProperty("ASTNODE");   
-                nodeWidget.displayNode(astNode);
+                IASTNode astNode = (IASTNode) event.getProperty("ASTNODE");
+                if (astNode != null) {
+                    nodeWidget.displayNode(astNode);
+                }
             }
         });
-        
+
     }
 
     @Override
     public void setFocus() {
-                
+
     }
-    
+
     public void registerEventHandler(String topic, EventHandler handler) {
         BundleContext ctx = FrameworkUtil.getBundle(ASTView.class).getBundleContext();
         Dictionary<String, String> props = new Hashtable<String, String>();
         props.put(EventConstants.EVENT_TOPIC, topic);
         ServiceRegistration reg = ctx.registerService(EventHandler.class.getName(), handler, props);
-      }
+    }
 }
