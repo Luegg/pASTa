@@ -1,4 +1,4 @@
-package org.eclipse.cdt.astview.test;
+package org.eclipse.cdt.pasta.test;
 
 import org.junit.Test;
 

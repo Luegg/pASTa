@@ -15,6 +15,6 @@ Require-Bundle: org.eclipse.ui,
  ch.hsr.ifs.cdttesting;bundle-version="3.2.0"
 Bundle-Version: 1.0.0.qualifier
 Bundle-ManifestVersion: 2
-Bundle-Activator: org.eclipse.cdt.astview.test.TestActivator
+Bundle-Activator: org.eclipse.cdt.pasta.test.TestActivator
 Bundle-SymbolicName: org.eclipse.cdt.pasta.test;singleton:=true
 

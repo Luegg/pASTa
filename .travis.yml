@@ -1,4 +1,4 @@
 language: java
 jdk: oraclejdk7
 
-script: vn clean install -f org.eclipse.cdt.pasta.parent/pom.xml
+script: mvn clean install -f org.eclipse.cdt.pasta.parent/pom.xml
