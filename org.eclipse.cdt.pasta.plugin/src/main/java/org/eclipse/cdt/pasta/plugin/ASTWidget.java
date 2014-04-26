@@ -69,7 +69,7 @@ public class ASTWidget extends ScrolledComposite {
     public void drawAST(IASTTranslationUnit ast) {
         clear();
         root = constructTree(ast, canvas);
-        root.adjust();
+        root.adjust(1f, 20f);
         updateNodePositions(root);
         root.data().setVisible(true);
         canvas.redraw();
@@ -194,7 +194,7 @@ public class ASTWidget extends ScrolledComposite {
                 treeWidth = 0;
                 treeHeight = 0;
                 if (!node.isTreatedAsLeaf()) {
-                    root.adjust();
+                    root.adjust(1f, 20f);
                 }
                 updateNodePositions(root);
                 canvas.redraw();

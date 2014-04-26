@@ -7,8 +7,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.cdt.core.dom.ast.IASTImplicitName;
+import org.eclipse.cdt.core.dom.ast.IASTImplicitNameOwner;
 import org.eclipse.cdt.core.dom.ast.IASTName;
 import org.eclipse.cdt.core.dom.ast.IASTNode;
+import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
 import org.eclipse.cdt.core.dom.ast.IBinding;
 import org.eclipse.cdt.core.index.IIndex;
 import org.eclipse.cdt.core.index.IIndexName;
@@ -49,6 +52,7 @@ public class NodeWidget extends Composite {
         clearTree();
         displayName(node);
         displayBindings(node);
+        displayImplicitNames(node);
         displayTypeHierarchy(node);
         displayFields(node);
         displayMethods(node);
@@ -86,6 +90,7 @@ public class NodeWidget extends Composite {
     private void displayTypeHierarchy(IASTNode node) {
         TreeItem typeHierarchy = createTreeItem(tree, "Type Hierarchy;");
         collectSuperclasses(typeHierarchy, node.getClass().getSuperclass());
+        expandAll(typeHierarchy);
     }
 
     private void collectSuperclasses(TreeItem superClasses, Class<?> clazz) {
@@ -93,10 +98,8 @@ public class NodeWidget extends Composite {
             return;
         }
         TreeItem classItem = createTreeItem(superClasses, clazz.getSimpleName() + ";");
-
         displayInterfaceHierarchy(classItem, clazz);
         collectSuperclasses(classItem, clazz.getSuperclass());
-
     }
 
     private void displayInterfaceHierarchy(TreeItem classItem, Class<?> clazz) {
@@ -115,22 +118,32 @@ public class NodeWidget extends Composite {
             }
         }
     }
+    
+    private void displayImplicitNames(IASTNode node) {
+        if (node instanceof IASTImplicitNameOwner) {
+            IASTImplicitName[] implicitNames = ((IASTImplicitNameOwner) node).getImplicitNames();
+            TreeItem parent = createTreeItem(tree, "Implicit Names;"+implicitNames.length);
+            for (IASTImplicitName implicitName : implicitNames) {
+                createTreeItem(parent, implicitName.resolveBinding().getName()+";");
+            }
+        }
+    }
 
     private void displayBindings(IASTNode node) {
-        TreeItem parent = createTreeItem(tree, "Bindings;");
         try {
             if (node instanceof IASTName) {
-                System.out.println("resolving bindings...");
-                IBinding binding = ((IASTName) node).getBinding();
+                IASTTranslationUnit ast = node.getTranslationUnit();
+                TreeItem parent = createTreeItem(tree, "Bindings;");
+                IBinding binding = ((IASTName) node).resolveBinding();
                 IIndex index = node.getTranslationUnit().getIndex();
                 for (IIndexName decl : index.findDeclarations(binding)) {
                     createTreeItem(parent, "declaration;" + decl.getEnclosingDefinition());
                 }
                 for (IIndexName def : index.findDefinitions(binding)) {
-                    createTreeItem(parent, "definition;" + def.getClass().getSimpleName());
+                    createTreeItem(parent, "definition;" + ast.getNodeSelector(null).findEnclosingNode(def.getNodeOffset(), def.getNodeLength()));
                 }
                 for (IIndexName ref : index.findReferences(binding)) {
-                    createTreeItem(parent, "reference;" + ref.getClass().getSimpleName());
+                    createTreeItem(parent, "reference;" +  ast.getNodeSelector(null).findEnclosingNode(ref.getNodeOffset(), ref.getNodeLength()));
                 }
             }
         } catch (Exception e) {
@@ -152,6 +165,13 @@ public class NodeWidget extends Composite {
     private void expandFirstLevel() {
         for (TreeItem item : tree.getItems()) {
             item.setExpanded(true);
+        }
+    }
+    
+    private void expandAll(TreeItem item) {
+        item.setExpanded(true);
+        for (TreeItem child : item.getItems()) {
+            expandAll(child);
         }
     }
 
