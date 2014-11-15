@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
 
+@SuppressWarnings("restriction")
 public class NodeWidget extends Composite {
 
     private Tree tree;
@@ -53,15 +54,17 @@ public class NodeWidget extends Composite {
         displayName(node);
         displayBindings(node);
         displayImplicitNames(node);
-        displayTypeHierarchy(node);
-        displayFields(node);
-        displayMethods(node);
+        TreeItem typeHierarchy = createTreeItem(tree, "Type Hierarchy;");
+        displayTypeHierarchy(typeHierarchy, node);
+        TreeItem fields = createTreeItem(tree, "Fields;");
+        displayFields(fields, node);
+        TreeItem methods = createTreeItem(tree, "Methods;");
+        displayMethods(methods, node);
         expandFirstLevel();
     }
 
-    private void displayMethods(IASTNode node) {
-        collectMethods(createTreeItem(tree, "Methods;"), node.getClass());
-        
+    private void displayMethods(TreeItem parent, Object node) {
+        collectMethods(parent, node.getClass());
     }
 
     private void displayName(IASTNode node) {
@@ -74,23 +77,21 @@ public class NodeWidget extends Composite {
         }
     }
 
-    private void displayFields(IASTNode node) {
-        TreeItem fieldItem = createTreeItem(tree, "Fields;");
+	private void displayFields(TreeItem parent, Object node) {
         List<Field> fields = new ArrayList<>(Arrays.asList(node.getClass().getFields()));
         fields.addAll(Arrays.asList(node.getClass().getDeclaredFields()));
         for (Field field : fields) {
             makeAccessible(field);
             Object fieldValue = getValue(field, node);
             if (!(fieldValue instanceof CPPASTNameBase)) { // workaround for CPPASTNameBase.toString() NPE
-                createTreeItem(fieldItem, field.getName() + ";" + getValue(field, node));
+                createTreeItem(parent, field.getName() + ";" + getValue(field, node));
             }
         }
     }
 
-    private void displayTypeHierarchy(IASTNode node) {
-        TreeItem typeHierarchy = createTreeItem(tree, "Type Hierarchy;");
-        collectSuperclasses(typeHierarchy, node.getClass().getSuperclass());
-        expandAll(typeHierarchy);
+    private void displayTypeHierarchy(TreeItem parent, Object o) {
+        collectSuperclasses(parent, o.getClass());
+        expandAll(parent);
     }
 
     private void collectSuperclasses(TreeItem superClasses, Class<?> clazz) {
@@ -145,6 +146,15 @@ public class NodeWidget extends Composite {
                 for (IIndexName ref : index.findReferences(binding)) {
                     createTreeItem(parent, "reference;" +  ast.getNodeSelector(null).findEnclosingNode(ref.getNodeOffset(), ref.getNodeLength()));
                 }
+
+                TreeItem typeHierarchy = createTreeItem(parent, "Type Hierarchy;");
+                displayTypeHierarchy(typeHierarchy, binding);
+                
+                TreeItem fields = createTreeItem(parent, "Fields;");
+                displayFields(fields, binding);
+                
+                TreeItem methods = createTreeItem(parent, "Methods;");
+                displayMethods(methods, binding);
             }
         } catch (Exception e) {
             PastaPlugin.log(e);
@@ -175,7 +185,7 @@ public class NodeWidget extends Composite {
         }
     }
 
-    private Object getValue(Field field, IASTNode node) {
+    private Object getValue(Field field, Object node) {
         try {
             return field.get(node);
         } catch (Throwable e) {
