@@ -91,7 +91,7 @@ public class NodeWidget extends Composite {
 
     private void displayTypeHierarchy(TreeItem parent, Object o) {
         collectSuperclasses(parent, o.getClass());
-        expandAll(parent);
+        parent.setExpanded(true);
     }
 
     private void collectSuperclasses(TreeItem superClasses, Class<?> clazz) {
@@ -101,11 +101,13 @@ public class NodeWidget extends Composite {
         TreeItem classItem = createTreeItem(superClasses, clazz.getSimpleName() + ";");
         displayInterfaceHierarchy(classItem, clazz);
         collectSuperclasses(classItem, clazz.getSuperclass());
+        classItem.setExpanded(true);
     }
 
     private void displayInterfaceHierarchy(TreeItem classItem, Class<?> clazz) {
         for (Class<?> interfaceClass : clazz.getInterfaces()) {
-            createTreeItem(classItem, interfaceClass.getSimpleName() + ";");
+            TreeItem interfaceItem = createTreeItem(classItem, interfaceClass.getSimpleName() + ";");
+            displayInterfaceHierarchy(interfaceItem, interfaceClass);
         }
     }
 
